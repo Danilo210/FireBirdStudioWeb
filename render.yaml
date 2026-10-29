@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: firebird-designer-online
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health

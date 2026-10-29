@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#121722"><title>Firebird Designer — Editor de Banco de Dados</title>
+<link rel="stylesheet" href="./static/style.css">
+</head>
+<body>
+<div id="app">
+<header class="topbar">
+  <div class="brand"><span class="brandmark">◆</span><span>Firebird <b>Designer</b><small>STUDIO WEB</small></span></div>
+  <div class="top-separator"></div><div class="project-title"><span class="crumb">Projeto /</span> <button id="renameProject" class="project-name" title="Renomear projeto">COMERCIAL <span>⌄</span></button><span class="save-dot" id="saveIndicator" title="Salvo automaticamente"></span></div>
+  <div class="top-actions"><button class="btn ghost compact" id="btnNewDatabase" title="Criar novo banco">＋ <span class="hide-sm">Novo banco</span></button><button class="btn ghost compact" id="btnUndo" title="Desfazer (Ctrl+Z)">↶ <span class="hide-sm">Desfazer</span></button><button class="btn ghost compact" id="btnRedo" title="Refazer (Ctrl+Y)">↷</button><button class="btn ghost compact" id="themeToggle" title="Alternar tema">☼</button><div class="splitter"></div><button class="btn subtle" id="btnImport">↥ <span class="hide-sm">Importar</span></button><button class="btn primary" id="btnExport">⇩ Exportar <span class="chevron">⌄</span></button></div>
+</header>
+<div class="workbench">
+  <aside class="rail"><button class="railbutton active" title="Explorador" aria-label="Explorador">▤</button><button class="railbutton" id="railNew" title="Nova tabela" aria-label="Nova tabela">⊞</button><button class="railbutton" id="railSQL" title="Editor SQL" aria-label="Editor SQL">⌘</button><div class="rail-spacer"></div><button class="railbutton" id="railHelp" title="Ajuda" aria-label="Ajuda">ⓘ</button></aside>
+  <aside class="sidebar" id="sidebar"><div class="side-head"><div class="eyebrow">EXPLORADOR</div><button class="icon-btn" id="createTableMini" title="Nova tabela">＋</button></div>
+   <div class="db-block"><div class="db-icon">▣</div><div><b id="sideDbName">COMERCIAL</b><small>Firebird 3.0 · UTF8</small></div><span class="db-chevron">⌄</span></div>
+   <div class="tree-header"><span>▾ &nbsp; TABELAS <b class="pill" id="tableCount">0</b></span><button class="icon-btn small" title="Nova tabela" id="addTableAside">＋</button></div><div id="tableTree" class="tree-items"></div>
+   <div class="side-footer"><div class="side-footer-icon">◈</div><div><b>Modelo local</b><small>Seu trabalho fica salvo neste navegador.</small></div></div>
+  </aside>
+  <main class="main"><div class="tab-strip"><div class="tab-active-mark"></div><div class="file-tab"><span class="tabicon">▦</span><span id="tabName">CLIENTES</span><span class="tab-dirty">●</span></div><button class="tab-tool" id="newTableTab" title="Nova tabela">＋</button><div class="tab-spacer"></div><span class="version-chip">Firebird SQL · Dialect 3</span></div>
+    <div class="content-scroll"><div class="page-inner">
+      <div class="table-header"><div class="table-heading"><div class="object-icon">▦</div><div><div class="heading-kicker">BANCO DE DADOS <span>›</span> TABELAS</div><h1 id="tableTitle">CLIENTES</h1><div class="table-description" id="tableSubtitle">Estrutura e dados da tabela</div></div></div><div class="table-heading-actions"><button class="btn subtle" id="duplicateTable">▤ Duplicar</button><button class="btn subtle" id="editTableName">✎ Renomear</button><button class="btn danger-ghost" id="deleteTable">▢ Excluir</button></div></div>
+      <nav class="main-nav" aria-label="Abas da tabela"><button data-view="structure" class="nav-item active">▤ <span>Estrutura</span></button><button data-view="data" class="nav-item">▦ <span>Dados</span></button><button data-view="relations" class="nav-item">⌁ <span>Relacionamentos</span></button><button data-view="sql" class="nav-item">⌘ <span>SQL</span></button><button data-view="diagram" class="nav-item">◇ <span>Diagrama ER</span></button></nav>
+      <div id="mainContent"></div>
+    </div></div>
+    <footer class="statusbar"><div><span class="ready-led"></span> <span id="statusText">Pronto para editar</span></div><div><span id="statusTables">0 tabelas</span><span class="status-sep">•</span> Auto-save <span class="status-sep">•</span> <span id="backendStatus">Verificando gerador .FDB…</span></div></footer>
+  </main>
+  <aside class="inspector" id="inspector"><div class="inspect-head"><span class="eyebrow">PROPRIEDADES</span><span>⚙</span></div><div id="inspectorContent"></div></aside>
+</div></div>
+<input type="file" id="importFile" hidden accept=".json,.sql,.csv,application/json,text/csv" />
+<div id="modalRoot"></div><div id="toastRoot" aria-live="polite"></div>
+<script src="./static/app.js" defer></script>
+</body></html>
