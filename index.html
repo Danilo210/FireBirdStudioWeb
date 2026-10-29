@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0c111a">
+<title>Firebird Studio Web — Database Workbench</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='14' width='64' height='64' fill='%23131d2d'/%3E%3Cpath d='M15 20q17-12 34 0v24q-17 12-34 0z' fill='%23f2934a'/%3E%3Cellipse cx='32' cy='20' rx='17' ry='7' fill='%23ffd39b'/%3E%3Cpath d='M15 32q17 12 34 0' fill='none' stroke='%23131d2d' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="app" id="app">
+<header class="topbar">
+  <div class="brand"><span class="logo" aria-hidden="true"><svg viewBox="0 0 44 44"><rect x="3" y="3" width="38" height="38" rx="11" fill="currentColor" opacity=".17"/><ellipse cx="22" cy="12" rx="12" ry="5" fill="#ffb26c"/><path d="M10 12v20c0 7 24 7 24 0V12" fill="#e9823f"/><path d="M10 22c0 7 24 7 24 0" fill="none" stroke="#85421b" stroke-width="2.5"/><path d="M10 31c0 7 24 7 24 0" fill="none" stroke="#85421b" stroke-width="2.5"/></svg></span>
+    <div><strong>Firebird<span class="brand-light">Studio</span></strong><small>DATABASE WORKBENCH <span class="version">v1.0</span></small></div>
+  </div>
+  <div class="menu-actions">
+    <button id="newQueryTop" class="nav-btn" title="Nova consulta (Ctrl+N)">＋ <span>Nova consulta</span></button>
+    <button id="builderTop" class="nav-btn" title="Nova tabela">▦ <span>Nova tabela</span></button>
+    <span class="top-divider"></span>
+    <button id="downloadSQL" class="nav-btn" title="Exportar script SQL">⇩ <span>Exportar SQL</span></button>
+    <button id="themeToggle" class="icon-btn" title="Alternar tema claro / escuro" aria-label="Alternar tema">☾</button>
+    <button id="helpTop" class="icon-btn" title="Ajuda" aria-label="Ajuda">?</button>
+  </div>
+</header>
+<div class="toolbar">
+  <button id="mobileExplorer" class="mobile-explorer" aria-label="Mostrar explorador">☰</button>
+  <div class="crumb"><span class="dot blue"></span><span id="connectionLabel">Ambiente de demonstração</span><span class="crumb-arr">›</span><span class="crumb-current" id="contextLabel">Editor SQL</span></div>
+  <div class="toolbar-right"><span class="tag-demo" id="demoBadge">DEMO</span><span id="latency" class="latency">Pronto</span><button class="tiny-btn" id="connectBtn">◉ Conexões</button></div>
+</div>
+<div class="workbench">
+<aside class="sidebar" id="sidebar">
+  <div class="side-head"><div class="side-title">EXPLORADOR <span>⌄</span></div><div class="side-tools"><button title="Atualizar" id="refreshTree">↻</button><button title="Nova consulta" id="newQuerySide">＋</button></div></div>
+  <div class="db-summary"><span class="db-circle">◈</span><div><strong id="dbTitle">Banco de demonstração</strong><small id="dbSubtitle">Firebird SQL · local</small></div><span class="status-circle" id="connectionDot"></span></div>
+  <div class="tree-search"><span>⌕</span><input id="treeSearch" placeholder="Filtrar objetos..." autocomplete="off" aria-label="Filtrar objetos"></div>
+  <div class="tree-scroll" id="treeScroll"></div>
+  <div class="sidebar-bottom"><button id="newDatabaseSide">⊞ <span>Criar banco de dados</span></button><button id="importSQLSide">↥ <span>Importar script .sql</span></button></div>
+</aside>
+<main class="mainarea">
+  <div class="tabs" id="tabs"><div class="tab-add" id="newQueryTab" title="Nova consulta">＋</div></div>
+  <div class="workspace">
+    <section class="overview pane" id="overviewPane" hidden>
+      <div class="section-kicker">GERENCIAMENTO DE DADOS</div>
+      <h1>Bem-vindo ao seu banco de dados<span>.</span></h1>
+      <p>Gerencie tabelas, examine registros, construa consultas e mantenha sua estrutura SQL em um só lugar.</p>
+      <div class="metrics" id="metrics"></div>
+      <div class="quick-grid"><button id="quickSql"><span class="quick-icon">⌘</span><strong>Nova consulta SQL</strong><small>Execute SELECT, INSERT, UPDATE e DDL</small><span class="quick-arr">↗</span></button><button id="quickTable"><span class="quick-icon">▦</span><strong>Criar tabela</strong><small>Defina colunas, tipos e chave primária</small><span class="quick-arr">↗</span></button><button id="quickConnect"><span class="quick-icon">⌁</span><strong>Conectar Firebird</strong><small>Configure uma conexão real no servidor</small><span class="quick-arr">↗</span></button><button id="quickExport"><span class="quick-icon">⇩</span><strong>Exportar estrutura</strong><small>Gere SQL com a definição de tabelas</small><span class="quick-arr">↗</span></button></div>
+      <div class="welcome-note"><strong>⌁ Dica de uso</strong><span>Abra uma tabela na barra lateral para inspecionar seus dados. Clique duas vezes em uma coluna no editor de tabelas para personalizá-la. No modo real, operações SQL são executadas no Firebird conectado.</span></div>
+    </section>
+    <section class="editor-pane pane" id="queryPane" hidden>
+      <div class="pane-bar"><div><span class="section-label">SQL EDITOR</span><span id="queryDescription" class="description">Consulta SQL • Firebird Dialect 3</span></div><div class="pane-controls"><button class="minor" id="formatSql">☷ Formatar</button><button class="minor" id="saveSqlFile">⇩ Salvar SQL</button><button class="primary" id="runSql">▶ Executar <kbd>Ctrl↵</kbd></button></div></div>
+      <div class="sql-editor" id="sqlEditor"><div class="line-gutter" id="sqlLines">1</div><div class="code-layer"><pre id="sqlHighlight" aria-hidden="true"></pre><textarea id="sqlInput" spellcheck="false" aria-label="Editor SQL" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea></div></div>
+      <div class="resizer" id="resultsResizer" title="Arraste para alterar a altura dos resultados"></div>
+      <div class="results-container" id="queryResults"><div class="results-header"><div class="results-tabs"><button class="results-tab active" id="resultsDataTab">▦ Resultados</button><button class="results-tab" id="resultsMessagesTab">≡ Mensagens</button></div><div class="results-actions"><button class="tiny" id="copyGrid" title="Copiar resultados">⧉ Copiar</button><button class="tiny" id="csvGrid" title="Exportar resultado em CSV">⇩ CSV</button></div></div><div class="table-scroll" id="queryGrid"></div><div class="messages-log" id="queryMessages" hidden></div><div class="grid-footer" id="queryFooter">Pronto para executar • Ctrl + Enter</div></div>
+    </section>
+    <section class="table-pane pane" id="tablePane" hidden>
+      <div class="table-title-bar"><div class="table-heading"><div class="table-icon">▦</div><div><span class="section-label" id="tableKind">TABELA</span><h2 id="tableTitle">CLIENTES</h2></div></div><div class="pane-controls"><button class="minor" id="tableRefresh">↻ Atualizar</button><button class="minor" id="tableSql">⌘ Abrir SQL</button><button class="primary" id="addRecord">＋ Novo registro</button></div></div>
+      <div class="subnav"><button data-subtab="data" class="selected">▦ Dados</button><button data-subtab="structure">☷ Estrutura</button><button data-subtab="indexes">⬡ Índices</button><div class="subnav-right"><span id="rowCountInfo">— registros</span></div></div>
+      <div class="table-content" id="tableData"><div class="data-toolstrip"><label>Pesquisar na página <input id="dataFilter" placeholder="Buscar nos registros..." autocomplete="off"></label><span class="flex-spacer"></span><button class="tiny" id="exportData">⇩ CSV</button><button class="tiny danger-text" id="removeRecord" disabled>✕ Excluir selecionado</button></div><div class="table-scroll" id="dataGrid"></div><div class="pagination"><span id="dataPageInfo">Página 1</span><div><button id="prevPage">← Anterior</button><button id="nextPage">Próxima →</button></div></div></div>
+      <div class="table-content" id="tableStructure" hidden><div class="struct-top"><strong>Colunas e campos</strong><button id="addColumn">＋ Adicionar campo (SQL)</button></div><div id="structureGrid" class="structure-grid"></div><p class="muted-notice">Alterações estruturais são executadas por SQL. Faça backup antes de modificar tabelas de produção.</p></div>
+      <div class="table-content" id="tableIndexes" hidden><div class="struct-top"><strong>Índices e chaves</strong><button id="addIndex">＋ Criar índice (SQL)</button></div><div id="indexesGrid" class="structure-grid"></div></div>
+    </section>
+    <section class="builder-pane pane" id="builderPane" hidden><div class="pane-bar"><div><span class="section-label">DESIGNER DE TABELAS</span><span class="description">Modelagem visual DDL</span></div><div class="pane-controls"><button class="minor" id="previewDdl">⌘ Visualizar SQL</button><button class="primary" id="applyDdl">▶ Criar tabela</button></div></div><div class="builder-scroll"><div class="builder-head"><div class="builder-icon">▦</div><div><div class="section-kicker">CRIAÇÃO DE ESTRUTURA</div><h2>Nova tabela</h2><p>Configure sua tabela visualmente e gere SQL compatível com Firebird 3+.</p></div></div><div class="builder-card"><label class="field-label">NOME DA TABELA<input id="builderName" value="NOVA_TABELA" placeholder="Ex.: CLIENTES"></label><div class="builder-grid-head"><strong>Campos da tabela</strong><span>Defina nome, tipo, nulabilidade e PK.</span></div><div class="builder-fields" id="builderFields"></div><button class="add-field" id="builderAddField">＋ Adicionar campo</button></div><div class="builder-hint"><span>ⓘ</span> A tabela será criada somente após confirmar a execução do SQL. Identificadores devem ter no máximo 31 caracteres para compatibilidade com Firebird 3.</div></div></section>
+  </div>
+</main>
+<aside class="info-rail" id="infoRail"><div class="rail-head">INFORMAÇÕES <button id="hideRail" title="Ocultar painel">×</button></div><div class="rail-content"><div class="rail-card"><span class="rail-key">AMBIENTE</span><div class="env-line"><span class="pulse"></span><strong id="railEnvironment">Demonstração local</strong></div><div class="rail-kv"><span>Engine</span><strong>Firebird 3+</strong></div><div class="rail-kv"><span>SQL Dialect</span><strong>3</strong></div><div class="rail-kv"><span>Charset</span><strong>UTF8</strong></div></div><div class="rail-card"><span class="rail-key">ATIVIDADE</span><div class="activity" id="activity"><div class="activity-entry"><span class="activity-icon">◉</span><div><strong>Workbench iniciado</strong><small>Pronto para trabalhar</small></div></div></div></div><div class="rail-card shortcuts"><span class="rail-key">ATALHOS</span><div><kbd>Ctrl</kbd><kbd>Enter</kbd><span>Executar SQL</span></div><div><kbd>Ctrl</kbd><kbd>N</kbd><span>Nova consulta</span></div><div><kbd>Ctrl</kbd><kbd>S</kbd><span>Salvar SQL</span></div><div><kbd>Ctrl</kbd><kbd>B</kbd><span>Nova tabela</span></div></div><div class="rail-tip">Evite executar alterações em produção sem testar e fazer backup. O modo demo não modifica bancos reais.</div></div></aside>
+</div>
+<footer class="statusbar"><div><span class="status-ok">●</span><span id="footerStatus">Sistema pronto</span></div><div><span id="statusMode">Firebird · DEMO</span><span class="foot-separator">│</span><span id="statusQuery">SQL Dialect 3</span><span class="foot-separator">│</span><span>UTF-8</span></div></footer>
+</div>
+<div class="toast-area" id="toastArea" aria-live="polite"></div>
+<div class="modal-backdrop" id="modalBackdrop" hidden><div class="modal" id="modalDialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><div><span class="section-kicker" id="modalEyebrow">FIREBIRD STUDIO</span><h2 id="modalTitle">Conexões</h2></div><button id="closeModal" title="Fechar">×</button></div><div class="modal-body" id="modalBody"></div><div class="modal-actions" id="modalActions"></div></div></div>
+<input type="file" id="sqlFileInput" accept=".sql,.txt" hidden>
+<script src="/static/app.js" defer></script>
+</body>
+</html>
